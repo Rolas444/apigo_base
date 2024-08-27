@@ -27,13 +27,15 @@ func main() {
 	userRepo := &repository.UserRepositoryImpl{DB: config.DB}
 	initService := &services.InitService{RoleRepo: roleRepo, UserRepo: userRepo}
 	initController := &controller.InitController{InitService: initService}
+	userService := services.NewUserService(userRepo)
+	userController := controller.NewUserController(userService)
 
 	//router := gin.New()
 	//config.Connect()
 	//Init()
 	initController.Initialize()
 	router := gin.Default()
-	routes.UserRoute(router)
+	routes.UserRoute(router, &userController)
 	// router.GET("/init", initController.Initialize)
 	router.Run(":8080")
 

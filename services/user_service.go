@@ -18,7 +18,7 @@ type UserServiceImpl struct {
 	UserRepo repository.UserRepository
 }
 
-func NewRoleService(userRepo repository.UserRepository) UserService {
+func NewUserService(userRepo repository.UserRepository) UserService {
 	return &UserServiceImpl{
 		UserRepo: userRepo,
 	}
