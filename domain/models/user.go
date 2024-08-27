@@ -9,4 +9,5 @@ type User struct {
 	Password string `json:"password"`
 	RoleID   uint   `json:"role_id"`
 	Role     Role   `json:"role" gorm:"foreignKey:RoleID"`
+	Status   bool   `json:"status" gorm:"default:true"`
 }

@@ -5,11 +5,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserRoute(router *gin.Engine) {
-	router.POST("/signup", controller.SignUp)
-	router.GET("/", controller.GetUser)
-	router.POST("/", controller.CreateUser)
-	router.GET("/:id", controller.GetUserById)
-	router.PUT("/:id", controller.UpdateUser)
-	router.DELETE("/:id", controller.DeleteUser)
+func UserRoute(router *gin.Engine, userController *controller.UserController) {
+	userGroup := router.Group("/users")
+	{
+		// userGroup.POST("/signup", controller.SignUp)
+		// userGroup.POST("/login", controller.Login)
+		userGroup.GET("/", userController.FindAllUsers)
+		userGroup.POST("/", userController.CreateUser)
+		userGroup.GET("/:id", userController.FindUserByID)
+		userGroup.PUT("/:id", userController.UpdateUser)
+		userGroup.DELETE("/:id", userController.DeleteUser)
+	}
+
 }

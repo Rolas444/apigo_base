@@ -1,9 +1,13 @@
 package controller
 
 import (
+	"os"
+	"time"
+
 	"github.com/Rolas444/apigo_base/config"
-	"github.com/Rolas444/apigo_base/models"
+	"github.com/Rolas444/apigo_base/domain/models"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -61,8 +65,16 @@ func Login(c *gin.Context) {
 	}
 
 	//Generate JWT token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,
+		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
+	}) //30 days
+	tokenString, err := token.SignedString(os.Getenv("SECRET"))
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Error generating token"})
+	}
 
-	c.JSON(200, gin.H{"message": "User logged in"})
+	c.JSON(200, gin.H{"token": tokenString, "message": "User logged in"})
 }
 
 func GetUser(c *gin.Context) {
