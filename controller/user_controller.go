@@ -18,6 +18,26 @@ func NewUserController(userService services.UserService) UserController {
 	}
 }
 
+func (ctrl *UserController) Login(c *gin.Context) {
+	var credentials models.Credentials
+
+	if err := c.ShouldBindJSON(&credentials); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid credentials"})
+		return
+	}
+
+	// println("Credentials: ", fmt.Sprintf("%v", &credentials))
+	token, err := ctrl.UserService.Login(&credentials)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Set the token in a secure, HttpOnly cookie
+	c.SetCookie("token", token, 60*60*24, "/", "true", true, true)
+	c.JSON(200, gin.H{"message": "Login successful"})
+}
+
 func (ctrl *UserController) CreateUser(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -61,13 +81,21 @@ func (ctrl *UserController) FindUserByID(c *gin.Context) {
 }
 
 func (ctrl *UserController) UpdateUser(c *gin.Context) {
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Invalid ID"})
+		return
+	}
+
 	var user models.User
+
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	updatedUser, err := ctrl.UserService.Update(&user)
+	updatedUser, err := ctrl.UserService.Update(&user, uint(id))
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return

@@ -6,6 +6,7 @@ import (
 	"github.com/Rolas444/apigo_base/config"
 	"github.com/Rolas444/apigo_base/controller"
 	"github.com/Rolas444/apigo_base/domain/repository"
+	"github.com/Rolas444/apigo_base/middleware"
 	"github.com/Rolas444/apigo_base/routes"
 	"github.com/Rolas444/apigo_base/services"
 	"github.com/gin-gonic/gin"
@@ -30,13 +31,16 @@ func main() {
 	userService := services.NewUserService(userRepo)
 	userController := controller.NewUserController(userService)
 
-	//router := gin.New()
-	//config.Connect()
-	//Init()
 	initController.Initialize()
 	router := gin.Default()
+	//use CORS
+	router.Use(middleware.CORSMiddleware())
+
 	routes.UserRoute(router, &userController)
-	// router.GET("/init", initController.Initialize)
+
+	//public routes
+	router.GET("/login", userController.Login)
+
 	router.Run(":8080")
 
 }

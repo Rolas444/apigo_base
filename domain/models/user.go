@@ -11,3 +11,8 @@ type User struct {
 	Role     Role   `json:"role" gorm:"foreignKey:RoleID"`
 	Status   bool   `json:"status" gorm:"default:true"`
 }
+
+type Credentials struct {
+	Email    string
+	Password string
+}

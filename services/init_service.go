@@ -3,7 +3,7 @@ package services
 import (
 	"github.com/Rolas444/apigo_base/domain/models"
 	"github.com/Rolas444/apigo_base/domain/repository"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/Rolas444/apigo_base/utils"
 	"gorm.io/gorm"
 )
 
@@ -41,7 +41,8 @@ func (s *InitService) InitRolesAndAdmin() error {
 		return err
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("sadmin"), bcrypt.DefaultCost)
+	hashedPassword, err := utils.HashPassword("sadmin")
+	//bcrypt.GenerateFromPassword([]byte("sadmin"), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
