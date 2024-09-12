@@ -16,7 +16,7 @@ func UserRoute(router *gin.Engine, userController *controller.UserController) {
 		userGroup.GET("/:id", userController.FindUserByID)
 		userGroup.PUT("/:id", userController.UpdateUser)
 		userGroup.DELETE("/:id", userController.DeleteUser)
-
+		userGroup.POST("/logout", userController.Logout)
 	}
 
 }

@@ -38,6 +38,11 @@ func (ctrl *UserController) Login(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Login successful"})
 }
 
+func (ctrl *UserController) Logout(c *gin.Context) {
+	c.SetCookie("token", "", -1, "/", "true", true, true)
+	c.JSON(200, gin.H{"message": "Logout successful"})
+}
+
 func (ctrl *UserController) CreateUser(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
