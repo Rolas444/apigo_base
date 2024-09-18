@@ -8,7 +8,7 @@ import (
 )
 
 func MigrateTables(db *gorm.DB) {
-	err := db.AutoMigrate(&models.Role{}, &models.User{})
+	err := db.AutoMigrate(&models.Role{}, &models.User{}, &models.Doctype{}, &models.ValidToken{})
 	if err != nil {
 		log.Fatalf("Error migrating tables: %v", err)
 	}

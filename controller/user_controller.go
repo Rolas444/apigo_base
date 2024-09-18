@@ -34,8 +34,8 @@ func (ctrl *UserController) Login(c *gin.Context) {
 	}
 
 	// Set the token in a secure, HttpOnly cookie
-	c.SetCookie("token", token, 60*60*24, "/", "true", true, true)
-	c.JSON(200, gin.H{"message": "Login successful"})
+	// c.SetCookie("token", token, 60*60*24, "/", "true", true, true)
+	c.JSON(200, gin.H{"token": token, "message": "Login successful"})
 }
 
 func (ctrl *UserController) Logout(c *gin.Context) {
