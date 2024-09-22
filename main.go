@@ -39,7 +39,7 @@ func main() {
 	routes.UserRoute(router, &userController)
 
 	//public routes
-	router.GET("/login", userController.Login)
+	router.POST("/login", userController.Login)
 
 	router.Run(":8080")
 

@@ -41,7 +41,7 @@ func (s *UserServiceImpl) Login(credentials *models.Credentials) (string, error)
 	if compError != nil {
 		return "", errors.New("invalid password")
 	}
-	return utils.GenerateToken(user.ID)
+	return utils.GenerateToken(user.ID, user.Email, user.RoleID)
 }
 
 func (s *UserServiceImpl) Create(user *models.User) (*models.User, error) {
